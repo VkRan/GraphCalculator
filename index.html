@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graphing Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.2.0/math.min.js" integrity="sha512-4VdpCxbABk7wjJb/9z/d3EyibeHwUY0FgHbFO4EiIPVtyyV6llhENCvzRk8SH5D86+Jwm6QLagqRRnEJCd3gJg==" crossorigin="anonymous"></script>
 </head>
 <body>
     <h1>Graph Calculator</h1>
@@ -20,13 +21,13 @@
         <div class="form-group">
             <label for="Trigo">Trigonometric Expression:</label>
             <input id="trigo" type="text" placeholder="Type the function here">
+            <small style="font-size: 11px;">Write trigo functions as sin(2x) or cos(3x)</small>
             <button id="trigoBtn">View Graph</button>
             
         </div>
     </div>
     <canvas id="graph"></canvas>
 </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.2.0/math.min.js" integrity="sha512-4VdpCxbABk7wjJb/9z/d3EyibeHwUY0FgHbFO4EiIPVtyyV6llhENCvzRk8SH5D86+Jwm6QLagqRRnEJCd3gJg==" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -5,6 +5,8 @@ let width  = window.innerWidth - 300;
 let gridSize = 20;
 const algebra = document.getElementById('algebra');
 const algebraBtn = document.getElementById('algbBtn');
+const trigo     = document.getElementById("trigo");
+const trigoBtn = document.getElementById('trigoBtn');
 const span = document.getElementById('equation');
 canvas.height = height;
 canvas.width  = width;
@@ -15,7 +17,9 @@ window.addEventListener('resize',()=>{
 });
 let vlines = 0;
 let hlines = 0;
-let algb = true;
+let algb = true,trigonometry=false;
+var value = '';
+var pts = [];
 function drawGrid()
 {
     let yPlot = gridSize;
@@ -106,15 +110,90 @@ function init()
     {
         drawAlgebraGraph();
     }
+    if(trigonometry)
+    {
+        drawTrigoGraph();
+    }
     xCoord();
     yCoord();
     ctx.restore();
 }
-function drawAlgebraGraph()
+algebraBtn.addEventListener("click",()=>{
+    algb = true;
+    trigonometry = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.closePath();
+    init();
+})
+trigoBtn.addEventListener("click",()=>{
+    algb = false;
+    trigonometry = true;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    ctx.closePath();
+    init();
+})
+algebra.addEventListener('input',(e)=>{
+    value = '';
+    value = e.target.value;
+});
+trigo.addEventListener("input",(e)=>{
+    value = '';
+    value = e.target.value;
+});
+function drawTrigoGraph()
 {
+    var i=0;
+    const parser = math.parser();
+    if(value.length>0)
+    {
+      parser.evaluate(`f(x) = ${value}`);
+      for(var x =-40;x<40;x+=Math.PI/180)
+      {
+          let ypt = parser.evaluate(`f(${x})`);
+          pts[i] = {x:x,y:ypt};
+          i++;
+      }
+    }
+    span.innerText = value;
     ctx.save();
     ctx.translate((Math.floor(hlines/2)*gridSize),Math.floor(vlines/2)*gridSize);
     ctx.beginPath();
+    for(var i=0;i<pts.length;i++)
+    {
+        ctx.lineTo(pts[i].x*gridSize,-pts[i].y*gridSize);
+        ctx.strokeStyle = 'red';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+    }
+    ctx.closePath();
+}
+function drawAlgebraGraph()
+{
+    var i=0;
+    pts = [];
+    if(value.length>0)
+    {
+        for(var x=-100;x<100;x+=0.3)
+    {
+        let ypt = eval(value);
+        pts[i] = {x:x,y:ypt};
+        i++;
+    }
+    }
+    span.innerText = value;
+    ctx.save();
+    ctx.translate((Math.floor(hlines/2)*gridSize),Math.floor(vlines/2)*gridSize);
+    ctx.beginPath();
+    for(var i=0;i<pts.length;i++)
+    {
+        ctx.lineTo(pts[i].x*gridSize,-pts[i].y*gridSize);
+        ctx.lineWidth = '2';
+        ctx.strokeStyle = 'red';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+    }
     ctx.closePath();
 }
 init();
